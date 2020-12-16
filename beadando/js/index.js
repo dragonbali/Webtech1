@@ -250,7 +250,11 @@ function submitCarForm() {
                     }),
                     contentType: 'application/json',
                     type: 'POST',
-                }).done(setTimeout(DrawAllCarTable(), 1000));
+                    success: function(){
+                        setTimeout(DrawAllCarTable(), 1000);
+                        closeForm();
+                    },
+                })
             }
         })
         if (!sent) {
@@ -274,10 +278,6 @@ function updateCar(id, car = { name: "", manufacturer: "", consumption: "", colo
 function openManufacturerForm() {
     $(".form-container").html(`
         <h2>Add new Manufacturer</h2>
-        <label for="_id">
-            <strong>id</strong>
-        </label>
-        <input type="text" placeholder="asdasdasd" name="_id" required>
         <label for="name">
             <strong>name</strong>
         </label>
@@ -297,10 +297,17 @@ function openManufacturerForm() {
     openForm();
 }
 function submitManufacturerForm() {
-    $.post("https://webtechcars.herokuapp.com/api/manufacturers", {
-        id: $("input[name='_id']").val(),
-        name: $("input[name='name']").val(),
-        country: $("input[name='country']").val(),
-        founded: $("input[name='founded']").val(),
-    }, "json").done(DrawManufacturers());
+    $.ajax("https://webtechcars.herokuapp.com/api/manufacturers", {
+                    data: JSON.stringify({
+                        name: $("input[name='name']").val(),
+                        country: $("input[name='country']").val(),
+                        founded: $("input[name='founded']").val(),
+                    }),
+                    contentType: 'application/json',
+                    type: 'POST',
+                    success: function(){
+                        setTimeout(DrawManufacturers(), 1000);
+                        closeForm();
+                    },
+                })
 }
