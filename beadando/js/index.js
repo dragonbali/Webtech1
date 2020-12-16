@@ -145,6 +145,12 @@ function DrawManufacturers() {
                 <h3>${value.name}</h3>
                 <p>${value.country}</p>
                 <p>${value.founded}</p>
+                <button class="button"onclick="updateManufacturers('${value._id}',
+                                                {name: '${value.name}', 
+                                                country: '${value.country}',
+                                                founded:'${value.founded}',} )">
+                    Update
+                </button>
                 </div>`);
         })
     })
@@ -217,7 +223,7 @@ function openCarForm(car = { name: "", manufacturer: "", consumption: "", color:
         <label for="year">
             <strong>year</strong>
         </label>
-        <input type="text" placeholder="1999" name="year" required value="${car.year}">
+        <input type="text" placeholder="1999-01-02" name="year" required value="${car.year}">
         <label for="avaiable">
             <strong>available</strong>
         </label>
@@ -225,7 +231,7 @@ function openCarForm(car = { name: "", manufacturer: "", consumption: "", color:
         <label for="horsepower">
             <strong>horsepower</strong>
         </label>
-        <input type="number" placeholder="50" name="horsepower" required>
+        <input type="number" placeholder="50" name="horsepower" required value="${car.horsepower}">
         <button type="submit" class="btn" onclick="submitCarForm()">Submit</button>
         <button type="submit" class="btn cancel" onclick="closeForm()">Cancel</button>
         `);
@@ -262,34 +268,46 @@ function submitCarForm() {
         }
     });
 }
-
+////Cars
 function deleteCar(id) {
     $.ajax(`https://webtechcars.herokuapp.com/api/cars/${id}`,
         {
             type: 'DELETE',
         });
 }
-
+//if u just close the form it will delete
 function updateCar(id, car = { name: "", manufacturer: "", consumption: "", color: "", year: "", avaiable: "", horsepower: "" }) {
     deleteCar(id);
     openCarForm(car);
 }
+////Manufacturers
+function deleteManufacturers(id) {
+    $.ajax(`https://webtechcars.herokuapp.com/api/manufacturers/${id}`,
+        {
+            type: 'DELETE',
+        });
+}
+//if u just close the form it will delete
+function updateManufacturers(id, manufacturers = { name: "", country: "", founded: ""}) {
+    deleteManufacturers(id);
+    openManufacturerForm(manufacturers);
+}
 
-function openManufacturerForm() {
+function openManufacturerForm(manufacturer = { name: "", country: "", founded: "" }) {
     $(".form-container").html(`
         <h2>Add new Manufacturer</h2>
         <label for="name">
             <strong>name</strong>
         </label>
-        <input type="text" placeholder="Mclaren" name="name" required>
+        <input type="text" placeholder="Mclaren" name="name" required value="${manufacturer.name}">
         <label for="country">
             <strong>country</strong>
         </label>
-        <input type="text" placeholder="UK" name="country" required>
+        <input type="text" placeholder="UK" name="country" required value="${manufacturer.country}">
         <label for="founded">
             <strong>founded</strong>
         </label>
-        <input type="text" placeholder="1999" name="founded" required>
+        <input type="text" placeholder="1999-01-02" name="founded" required value="${manufacturer.founded}">
 
         <button type="submit" class="btn" onclick="submitManufacturerForm()">Submit</button>
         <button type="submit" class="btn cancel" onclick="closeForm()">Cancel</button>
